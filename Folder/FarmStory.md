@@ -128,5 +128,47 @@
   > ```  
   > </details>
 - AppsScript
-
+  > <details>
+  > <summary>Show Code</summary>
+  > 
+  > ```JavaScript
+  > var sheetId;
+  > var p;
+  > var dataList=[];
+  > 
+  > function response() // 데이터를 유니티에 전송하는 함수
+  > {
+  >   jsonData = JSON.stringify(dataList);
+  >   // 생성한 JSON을 유니티의 JsonUtility로 파싱할 수 있는 형태로 변환
+  >   jsonData = "{" + '"dataList"' + ":"+jsonData+"}"
+  >   return ContentService.createTextOutput(jsonData);
+  > }
+  > 
+  > function doPost(e)
+  > {
+  >   sheetID = SpreadsheetApp.openById("스프레드시트 URL");
+  >   p = e.parameter;
+  >   
+  >   // 유니티에서 AddField을 이용해 dataType으로 보낸 값(Value)에 따라 JSON으로 만들어줌
+  >   switch(p.dataType)
+  >   {
+  >     // 스프레드시트에서 데이터를 가져와 JSON으로 만드는 함수
+  >   }
+  >   return response(); // 만든 JSON을 유니티에 전송
+  > }
+  > 
+  > function GetVersion()
+  > {
+  >   var sheet = sheetId.getSheets()[0];
+  >   dataList = []; // JSON을 만들 데이터를 초기화시킴
+  >   var cnt = sheet.getLastRow();
+  >   for(let i = 2; i 〈= cnt; i++)
+  >   {
+  >     if(sheet.getRange(i, 2).getValue()=='') continue;
+  >     var data = {};
+  >     data.version = sheet.getRange(i, 2).getValue();
+  >     dataList.push(data);
+  > } 
+  > ```
+  > </details>
 ## 농장물의 성장 처리
