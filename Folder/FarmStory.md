@@ -171,10 +171,170 @@
   > } 
   > ```
   > </details>
-## 농장물의 성장 처리
-- 농장물 성장 알고리즘
-  > - 처음 개발할 때는 하루가 지나면 저장되어 있는 모든 농장물의 성장일을 1씩 증가하는 방향으로 개발함
+## 농작물의 성장 처리
+- 농작물 성장 알고리즘
+  > - 처음 개발할 때는 하루가 지나면 저장되어 있는 모든 농작물의 성장일을 1씩 증가하는 방향으로 개발함
   > - 코드 최적화를 위해 농장을 방문했을 때, 이전의 날짜와 현재 날짜의 차를 성장일에 더하는 방향으로 변경함
-- CropPrefab
+  > - 농작물 성장 처리 순서
+  >   > 1. 새로운 씬을 로드할 때, MapTileManager.InitMap을 이용해 로컬에 저장된 CropTile의 정보를 가져옴
+  >   > 2. MapTileManager.LoadTile을 통해 씬에 CropTile 정보가 존재하는 경우 날짜 증가 처리를 함
+  >   > 3. CropManager.LoadCrop에서 로컬에 저장된 CropPrefab 정보 중 MapTileManager.LoadTile에서 파괴되지 않은 CropPrefab 생성
+  >   > 4. CropPrefab.SpawnCropPrefab에서 CropPrefab이 생성될 때 CheckCropSprite를 이용해 CropTile의 growthDay에 따라 스프라이트를 변경시킴
+- MapTileManager
+  > <details>
+  > <summary>Show Code</summary>
+  > 
+  > ```C#
+  > [System.Serializable]
+  > public class CropTileDetails // 좌표의 농장물에 관한 데이터를 관리하는 클래스
+  > {
+  >   public int seedCode, growthDay;
+  >   public bool todayWater;
+  >   public Vector2Int coordinate, remain; // remain.x : dugRemain, remain.y : waterRemain
+  >   public Vector3Int lastDay;
+  >   int gap =〉 Utility.DayGap(lastDay); // 플레이어의 마지막 방문 날짜와 현재 날짜의 차이
+  >   public CropTileDetails(CropTileD)
+  >   {
+  >     // 플레이어가 땅을 팔 때 실행
+  >     // 이후에는 List<CropTileDetails>를 JSON으로 저장하고, 불러와 사용하기 때문에 별도의 생성자가 필요하지 않음
+  >   }
+  >   
+  >   public void SetLastDay() { lastDay = GameDatas.YearSeasonDay; } // 마지막 방문 날짜를 현재 날짜로 설정
+  >   
+  >   public Vector2Int CheckRemain()
+  >   {
+  >     todayWater = false;
+  >     remain = new Vector2Int(remain.x - gap 〈 0? -1 : remain.x - gap, remain.y - gap 〈 0? -1 : remain.y - gap);
+  >     growthDay = seedCode > 0 ? growthDay + gap : -1;
+  >     return remain;
+  >   }
+  > }
+  > 
+  > public class MapTileManager : Singleton<MapTileManager>
+  > {
+  >   // 농장물을 수확하거나 시든 경우 GameDatas.cropTileList에서 해당 타일을 삭제해야 함
+  >   // foreach 또는 for문을 사용해 리스트를 순환하는 중에 삭제할 경우 에러가 발생하기 때문에 삭제해야할 타일들을 저장할 리스트에 추가한 후 순환이 끝난 후 삭제하도록 함
+  >   List<CropTileDetails> removeCropTiles;
+  >   void InitMapTileList() // 씬 전환 시 실행하는 함수
+  >   {
+  >     DataManager.Instance.LoadCropTileData(GameDatas.currentscene); // 이전 씬의 cropTileList를 삭제하고, 현재 씬의 cropTileList를 로컬에서 가져옴(로컬에 파일이 없는 경우 빈 리스트 반환)
+  >     for(int i = 0; i 〈 tilemaps.Length; i++)
+  >       TilemapToList(tilemaps[i].type);
+  >     LoadTilemap();
+  >   }
+  > 
+  >   void LoadTilemap()
+  >   {
+  >     removeCropTiles.Clear(); // CropTileDetails를 삭제하기 위한 리스트
+  >     GameDatas.removeCoordinateList.Clear(); // CropPrefab를 삭제하기 위한 리스트
+  >     foreach(CropTileDetails tile in GameDatas.cropTileList)
+  >     {
+  >       Vector2Int result l= tile.CheckRemain();
+  >       if(result.x 〈 0)
+  >         removeCropTiles.Add(tile); // CropPrefab은 GameDatas.cropTileList에 있는 타일의 위치에만 생성됨(리스트에 없는 경우 Prefab이 생성되지 않음)
+  >       else
+  >       {
+  >         GameDatas.mapTileList[(int)TilemapType.dugGround - 1].Add(new MapTileData(tile.coordinate, TilemapType.dugGround));
+  >         if(result.y 〈 0)
+  >         {
+  >           GameDatas.removeCropCoordinateList.Add(tile.coordinate); // waterRemain이 0보다 작을 경우 농장물 시듦
+  >           tile.Wither();
+  >         }
+  >         else if(result.y > 0) // waterRemain이 0보다 크면 waterTile을 생성
+  >           GameDatas.mapTileList[(int)TilemapType.waterGround - 1].Add(new MapTileData(tile.coordinate, TilemapType.waterGround));
+  >       }
+  >     }
+  >    
+  >     foreach(CropTileDetails tile in removeCropTiles)
+  >       if(tile != null) GameDatas.cropTileList.Remove(tile);
+  >     foreach(MapTileData tile in GameDatas.mapTileList[(int)TilemapType.dugGround - 1 ])
+  >       SetDugTile(tile.coordinate);
+  >     foreach(MapTileData tile in GameDatas.mapTileList[(int)TilemapType.waterGround - 1 ])
+  >       SetWaterTile(tile.coordinate);
+  >     DataManager.Instance.SaveMapTileData();
+  >   }    
+  > }  
+  > ```
+  > </details>
 
+
+- CropManager
+  > <details>
+  > <summary>Show Code</summary>
+  > 
+  > ```C#
+  > void LoadCrop() // 이벤트 핸들러를 이용해 씬을 전환할 때 호출
+  > {
+  >   if(GameDatas.mapTileList[(int)TilemapType.diggable - 1].Count < 1)
+  >     return; // 만약 현재 씬에 농장물을 심을 수 없는 경우 함수 종료
+  >   GameDatas.cropPrefabList.Clear();
+  >   List<CropPrefabJson> dataList = DataManager.Instance.LoadDataToJson<CropPrefabJson>(JsonDataName.CropPrefab, GAmeDatas.currentScene); // 로컬에 JSON 형식으로 저장된 현재 씬의 농장물 정보를 가져옴
+  >   if(dataList.Count 〉0)
+  >   {
+  >     foreach(CropPrefabJson data in dataList)
+  >     {
+  >       if(GameDatas.removeCropCoordinateList.FindIndex(x =〉x == data.coordinate) 〈 0) 
+  >         // 농장물이 생성될 수 없는 좌표가 아닐 경우 농장물 오브젝트 생성
+  >         SpawnCrop(data.coordinate, data.seedCode, false);
+  >     }
+  >   }
+  >   DataManager.Instance.SaveCropPrefabData();
+  > }
+  > 
+  > public bool SpawnCrop(Vector2Int coordinate, int seedCode, bool useSeed = true)
+  > {
+  >   GameObject crop = PoolManager.Instance.DequeueObject(PoolPrefabName.crop);
+  >   if(!crop.GetComponent<CropPrefab>().SpawnCropPrefab(GameDatas.cropDetailsList.Find(x =〉x.seedCode == seedCode), coordinate))
+  >     // SpawnCropPrefab의 결과값이 false인 경우 false 반환 후 함수 종료
+  >     return false;
+  >   GameDatas.cropPrefabList.Add(crop.GetComponent<CropPrefab>());
+  >   crop.SetActive(true);
+  >   if(useSeed)
+  >     // 만약 씨앗을 사용한 경우(플레이어가 씨앗을 심은 경우)
+  >     EventHandler.CallUseSeedEvent();
+  >   return true;
+  > }
+  > ```
+  > </details>
+  
+- CropPrefab
+  > <details>
+  > <summary>Show Code</summary>
+  > 
+  > ```C#
+  > CropDetails details;
+  > CropTileDetails tileDetails;
+  > public Vector2Int coordinate {get; private set;}
+  > 
+  > public bool SpawnCropPrefab(CropDetails crop, Vector2Int coordinate)
+  > {
+  >   this.coordinate = coordinate;
+  >   details = crop;
+  >   tileDetails = GameDatas.cropTileList.Find(x =〉x.coordinate == coordinate);
+  >   if(tileDetails == null) return false; // 해당 좌표에 cropTile이 존재하지 않을 경우 false 반환
+  >   
+  >   tileDetails.seedCode = crop.seedCode;
+  >   GetComponentInChildren<SpriteRenderer>().sprite = CheckCropSprite();
+  >   transform.position = Utility.CoordinateToPosition(coordinate);
+  >   return true;
+  > }
+  > 
+  > Sprite CheckCropSprite()
+  > {
+  >   int stage = details.growthDay.Length;
+  >   int currentStage = 0;
+  >   int dayCounter = details.totalGrowthDay;
+  >   for(int i = stage -1; i 〉= 0; i--)
+  >   {
+  >     if(tileDetails.growthDay 〉= dayCounter)
+  >     {
+  >       currentStage = i;
+  >       break;
+  >     }
+  >     dayCounter -= details.growthDay[i];
+  >   }
+  >   return details.growthSprite[currentStage];
+  > }
+  > ```
+  > </details>
 
