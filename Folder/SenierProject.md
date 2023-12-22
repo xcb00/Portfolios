@@ -1,2 +1,1 @@
-학교 졸업작품
-- MySQL와 아피치를 이용해 백엔드 구축
+[![영상](http://img.youtube.com/vi/H_H9069172M/0.jpg)](https://youtu.be/H_H9069172M?t=0s) 
