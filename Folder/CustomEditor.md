@@ -7,6 +7,7 @@
 - 유니티 에디터창에서만 실행되기 때문에 전처리기를 사용해 메모리 최적화
 - 편의 기능
   > - 커스텀 윈도우를 열 때, 해당 윈도우로 관리하는 스크립터블 오브젝트가 없을 경우 자동 생성
+  > - 스크립터블 오브젝트를 자동 생성 시 해당 경로에 해당하는 폴더가 없는 경우 재귀함수를 이용해 폴더 생성(폴더의 경로는 string[]으로 설정)
   > - 스크립터블 오브젝트를 더블 클릭할 경우 커스텀 윈도우창 열기
   > - 이전에 작업중인 스크립터블 오브젝트가 있다면 커스텀 윈도우를 열 때, 해당 스크립터블 오브젝트를 불러옴
   > - 커스텀 윈도우가 활성화 시 스크립터블 오브젝트를 클릭하면 클릭한 스크립터블 오브젝트로 윈도우 갱신
@@ -258,39 +259,141 @@ public static class EditorUtilities
 <summary>DungeonGraphEditor.cs</summary>
 
 ```C#
+#if UNITY_EDITOR
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.Callbacks;
+using System.Text;
 
-#if UNITY_EDITOR
 public class DungeonGraphEditor : EditorWindow
 {
     #region Vars
     // GUI Style
     GUIStyle defaultStyle;
     GUIStyle selectedStyle;
+
+    static DungeonGraphSO graph;
+    const string ActiveGraph = "ActiveGraphID";
+    readonly string[] soPaths = { "Assets", "ScriptableObjects", "DungeonGraphs" };
+    const string ResourcePath = "Assets/Resources/ScriptableObjects";
+
+    StringBuilder sb;
     #endregion
 
+    #region Open Window
     [MenuItem("Window/Custom Editor/Dungeon Graph Editor")]
     static void OpenWindow()
     {
         GetWindow<DungeonGraphEditor>("Dungeon Graph Editor");
     }
 
+    [OnOpenAsset(0)]
+    // 스크립터블 오브젝트를 더블클릭할 경우 에디터창을 열고 더블클릭한 스크립터블 오브젝트를 불러옴
+    public static bool OnDoubleClickAsset(int instanceID, int line)
+    {
+        DungeonGraphSO clickGraph = EditorUtility.InstanceIDToObject(instanceID) as DungeonGraphSO;
+
+        if (clickGraph != null)
+        {
+            if (clickGraph != graph)
+                SaveActiveGraph();
+            OpenWindow();
+            graph = clickGraph;
+            return true;
+        }
+        return false;
+    }
+
+    void InspectorSelectionChanged()
+    {
+        DungeonGraphSO _graph = Selection.activeObject as DungeonGraphSO;
+        if (_graph != null)
+        {
+            graph = _graph;
+            GUI.changed = true;
+        }
+        Debug.Log($"Current Graph's name is {graph.name}");
+    }
+
+    void ActiveGraphChange()
+    {
+        string guid = EditorPrefs.GetString(ActiveGraph, "");
+
+        if (!string.IsNullOrEmpty(guid))
+        {
+            string path = AssetDatabase.GUIDToAssetPath(guid);
+            graph = AssetDatabase.LoadAssetAtPath<DungeonGraphSO>(path);
+        }
+
+        if (graph == null)
+        {
+            graph = ScriptableObject.CreateInstance<DungeonGraphSO>();
+
+            CheckFolder();
+
+            AssetDatabase.CreateAsset(graph, $"{sb}/DungeonGraph.asset");
+            AssetDatabase.SaveAssets();
+        }
+    }
+
+    void CheckFolder(int index = 0)
+    {
+        if (index < soPaths.Length)
+        {
+            sb.Append(soPaths[index++]);
+
+            if (index<soPaths.Length && !AssetDatabase.IsValidFolder($"{sb}/{soPaths[index]}"))
+                AssetDatabase.CreateFolder(sb.ToString(), soPaths[index]);
+
+            if (index < soPaths.Length)
+                sb.Append("/");
+
+            CheckFolder(index);
+        }
+    }
+
+    static void SaveActiveGraph()
+    {
+        if (graph != null)
+        {
+            string guid = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(graph));
+            EditorPrefs.SetString(ActiveGraph, guid);
+        }
+    }
+    #endregion
+
+    #region Unity Event Function
     private void OnEnable()
     {
+        if (sb == null)
+            sb = new StringBuilder();
+        else
+            sb.Clear();
+
+        Selection.selectionChanged += InspectorSelectionChanged;
+
+        ActiveGraphChange();
+
         RegistInputEvent();
+
         defaultStyle = EditorUtilities.DefineGUIStyle(new Vector2Int(25, 25), new Vector2Int(12, 12), NodeNumber.node1);
         selectedStyle = EditorUtilities.DefineGUIStyle(new Vector2Int(25, 25), new Vector2Int(12, 12), NodeNumber.node1, NodeStyle.on);
+    }
 
+    private void OnDisable()
+    {
+        SaveActiveGraph();
+        Selection.selectionChanged -= InspectorSelectionChanged;
     }
 
     private void OnGUI()
     {
-        inputEvent.InputProcess(Event.current, 0);
+
     }
+    #endregion
 
     #region Input Event Process
     EditorInputProcess inputEvent;
