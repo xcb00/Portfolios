@@ -71,12 +71,24 @@ public class EditorInputProcess
 
         if (_event.type == EventType.MouseDown && _event.button == 0)
             input = EditorMouseInput.LeftDown;
+        else if (_event.type == EventType.MouseDrag && _event.button == 0)
+            input = EditorMouseInput.LeftDrag;
+        else if (_event.type == EventType.MouseUp && _event.button == 0)
+            input = EditorMouseInput.LeftUp;
         else if (_event.type == EventType.MouseDown && _event.button == 1)
             input = EditorMouseInput.RightDown;
+        else if (_event.type == EventType.MouseUp && _event.button == 1)
+            input = EditorMouseInput.RightUp;
+        else if (_event.type == EventType.MouseDrag && _event.button == 1)
+            input = EditorMouseInput.RightDrag;
+        else if (_event.type == EventType.ScrollWheel && _event.delta.y > 0)
+            input = EditorMouseInput.WheelUp;
+        else if (_event.type == EventType.ScrollWheel && _event.delta.y < 0)
+            input = EditorMouseInput.WheelDown;
 
         try
         {
-            if (input == EditorMouseInput.None) // 마우스가 에디터창에서 움직일 경우
+            if (input == EditorMouseInput.None)
                 return;
             else if (MouseInputDic[input].Count <= index)
                 throw new Exception(ErrorCode.IndexOutOfRangeException.ToString());
@@ -85,7 +97,12 @@ public class EditorInputProcess
         }
         catch(Exception e)
         {
-            EditorUtilities.PrintErrorMessage(e.Message, $"입력한 인덱스[{index}]가 {input}의 크기[{MouseInputDic[input].Count}]보다 크거나 같습니다", 3);
+            if(!MouseInputDic.ContainsKey(input))
+                EditorUtilities.PrintErrorMessage(ErrorCode.KeyNotFoundException.ToString(), $"MouseInputDic에 {input}이 등록되어있지 않습니다", 3);
+            else 
+                EditorUtilities.PrintErrorMessage(e.Message, $"입력한 인덱스[{index}]가 {input}의 크기[{MouseInputDic[input].Count}]보다 크거나 같습니다", 3);
+            // if(MouseInputDic.ContainsKey(input))
+            //    EditorUtilities.PrintErrorMessage(e.Message, $"입력한 인덱스[{index}]가 {input}의 크기[{MouseInputDic[input].Count}]보다 크거나 같습니다", 3);
         }
     }
 }
