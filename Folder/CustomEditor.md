@@ -181,21 +181,13 @@ public static class EditorUtilities
 {
 #if UNITY_EDITOR
     #region PrintErrorMessage
-    public static void PrintErrorMessage(string errorCode, string errorMessage, int stackIndex = 1)
+    // stackIndex를 이용해 예외사항을 발생시킨 스크립트와 발생된 코드 위치를 출력
+    public static void PrintErrorMessage(string errorCode, string errorMessage, int stackIndex = 1) 
     {
         System.Diagnostics.StackTrace stack = new System.Diagnostics.StackTrace(true);
 
-        /*bool check = false;
-        if (check)
-        {
-            for (int i = stack.FrameCount - 1; i >= 0; i--)
-            {
-                System.Diagnostics.StackFrame f = stack.GetFrame(i);
-                Debug.Log($"[{i} : {f.GetFileName()}");
-            }
-        }*/
-
         System.Diagnostics.StackFrame frame = stack.GetFrame(stackIndex);
+        // 예외사항 종류 : 예외사항을 발생시킨 스크립트 : 예외사항이 발생된 코드 위치
         Debug.LogError($"{errorCode} : {System.IO.Path.GetFileName(frame.GetFileName())} : {frame.GetFileLineNumber()}" +
                 $"\n{errorMessage}");
     }
