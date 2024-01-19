@@ -6,19 +6,7 @@ using UnityEngine;
 using UnityEditor;
 using UnityEditor.Callbacks;
 using System.Text;
-using NUnit.Framework.Internal.Commands;
-using static Codice.CM.Common.CmCallContext;
-using Codice.CM.WorkspaceServer.DataStore.WkTree;
 
-// Ctrl + D : 선택한 노드들이
-// Ctrl + V : graph.roomList를 검증 (OnDisable에서도 호출)
-//            검증항목 : 1. 보스룸이 입구화 연결되어 있는지(에러), 생성한 룸 노드가 연결되어있는지(워닝)
-// Ctrl + E : 선택한 노드들 삭제
-// Shift + E : 선택한 노드들 간의 연결 삭제
-
-// +a
-// 그래프를 자동생성
-// 입력값 : Vector2Int 방개수 범위; byte 최대뎁스, int 방 타입 별 생성 확률
 public class DungeonGraphEditor : EditorWindow
 {
     #region Vars
