@@ -97,6 +97,64 @@
 
 </details>  
 
+### Script
+<details>
+<summary>EditorProcessBuilder.cs</summary>
+
+> - Custom Window의 입력을 처리하기 위한 스크립트
+> - 빌더 패턴을 사용해 Custom Window에서 사용할 입력을 등록
+> - `Dictionary<InputEnum, Action>`을 이용해 키 입력 시 발생할 메소드 관리
+>
+> <details>
+> <summary>How to use</summary>
+> 
+> ```C#
+> EditorInputProcess inputEvent;
+> void RegistInputEvent()
+> {
+>   EditorProcessBuilder builder = new EditorProcesesBuilder();
+>   inputEvent = builder.Build();
+>   builder.KeyboardEvent(MethodName, EditorKeyboardInput.value);
+> }
+> void InputProcess(Event _event)
+> {
+>   EditorKeyboardInput _input = GetKeyboardInput(_event); // Event의 input값에 따라 맞는 EditorKeyboardInput을 반환
+>   inputEvent.KeyInput(_input);
+> }
+> void OnGUI()
+> { InputProcess(Event.current); }
+> ```
+> </details>
+> <details>
+> <summary>class EditorInputProcess</summary>
+> 
+> ```C#
+> // 휴먼 에러를 줄이기 위해 enum을 Dictionary의 키로 사용
+> // 마우스 입력의 경우 상황에 따라 다른 메소드를 호출할 수도 있기 때문에 List로 같은 입력에 여러 메소드를 등록할 수 있도록 함
+> public Dictionary<EditorMouseInput, List<Action<Event>>> MouseInputDic;
+> public Dictionary<EditorKeyboardInput, Action> KeyboardInputDic;
+> public EditorInputProcess()
+> {
+>    MouseInputDic = new Dictionary<EditorMouseInput, List<Action<Event>>>();
+>    KeyboardInputDic = new Dictionary<EditorKeyboardInput, Action>();
+> }
+> 
+> public void KeyInput(EditorKeyboardInput input)
+> {
+>   try{
+>     if(input == EditorKeyboardInput.None) return;
+>     // KeyboardInputDic에 input을 키로 가지는 값이 없다면 에러 메시지 출력
+>     else if(!KeyboardInputDic.ContainsKey(input)) throw new Exception("KeyNotFoundException");
+>     else KeyboardInputDic[input]?.Invoke();
+>   } catch(Exception e) { Debug.LogError(e.Message); }
+> }
+> 
+> public void MouseInput(Event _event, EditorMouseInput input, int index) ...
+> ```
+</details>
+</details>
+
+
 ### Dungeon Graph Editor를 이용해 던전 생성
 [던전 생성]("www.naver.com")
 
