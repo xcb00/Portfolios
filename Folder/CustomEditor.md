@@ -47,16 +47,16 @@
   >   > - 입구가 윈도우의 중심에 오도록 이동하며, 입구를 원점으로 노드들의 좌표에 해당하는 위치로 노드들을 이동
   > - Generate Graph  
   >   > <details>
-  >   > <summary>Graph Menu Image</summary>
+  >   > <summary>Graph Generator Image</summary>
   >   > 
-  >   > ![Graph Menu Image](https://raw.githubusercontent.com/xcb00/Portfolios/main/Folder/Resources/DungeonGraphMenuImg3.png)
+  >   > ![Graph Generator Image](https://raw.githubusercontent.com/xcb00/Portfolios/main/Folder/Resources/DungeonGraphMenuImg3.png)
   >   > </details>
   >   > 
   >   > - 설정한 노드의 개수만큼 노드를 생성하며, 방의 타입은 설정한 확률을 따름
   >   > - 설정한 확률의 합이 100이 아닐 경우 그래프를 생성하지 않고 콘솔창에 경고를 출력
 - Node Menu
   > <details>
-  > <summary>Graph Menu Image</summary>
+  > <summary>Node Menu Image</summary>
   > 
   > ![Node Menu Image](https://raw.githubusercontent.com/xcb00/Portfolios/main/Folder/Resources/DungeonGraphMenuImg2.png)
   > </details>
