@@ -27,12 +27,33 @@
   > </details>
   > 
   > - Create Room Node
+  >   > - Room Node를 생성
+  >   > - 노드를 생성하고 [Ctrl + D]로 노드를 생성할 경우 선택한 노드와 동일한 타입의 노드가 마우스 커서 위치에 생성됨
+  >   > - 여러 노드를 선택한 후 [Ctrl + D]로 노드를 생성할 경우 선택한 노드의 개수만큼 새로운 노드가 생성됨
   > - Validate Graph or Update Depth
+  >   > - 입구와 보스룸이 연결되어있는지 검증
+  >   > - 연결되지 않은 노드가 있는지 검증
+  >   > - 검증에 오류가 없는 경우 입구가 윈도우의 중심에 오도록 이동
+  >   > - 노드의 Depth값을 업데이트
   > - Select All Room Nodes
+  >   > - 윈도우에 있는 모든 노드를 선택함
   > - Delete Selected Nodes
+  >   > - 선택한 노드들을 삭제함
+  >   > - 선택한 노드를 삭제할 때, 다른 노드들과의 연결을 해제함
   > - Disconnect Selected Nodes
+  >   > - 선택한 노드들 사이의 연결을 해제함
+  >   > - 선택한 노드들이 서로 연결되지 않았을 경우 아무런 일도 일어나지 않음
   > - Reposition Node
-  > - Generate Graph
+  >   > - 입구가 윈도우의 중심에 오도록 이동하며, 입구를 원점으로 노드들의 좌표에 해당하는 위치로 노드들을 이동
+  > - Generate Graph  
+  >   > <details>
+  >   > <summary>Graph Menu Image</summary>
+  >   > 
+  >   > ![Graph Menu Image](https://raw.githubusercontent.com/xcb00/Portfolios/main/Folder/Resources/DungeonGraphMenuImg3.png)
+  >   > </details>
+  >   > 
+  >   > - 설정한 노드의 개수만큼 노드를 생성하며, 방의 타입은 설정한 확률을 따름
+  >   > - 설정한 확률의 합이 100이 아닐 경우 그래프를 생성하지 않고 콘솔창에 경고를 출력
 - Node Menu
   > <details>
   > <summary>Graph Menu Image</summary>
@@ -41,8 +62,11 @@
   > </details>
   > 
   > - Delete Node
+  >   > 다른 노드들과의 연결을 해제한 후 삭제
   > - Disconnect
+  >   > 다른 노드들과의 연결을 해제
   > - Change Type
+  >   > 해당 노드의 타입을 다른 타입으로 변경
 
 ### Feature
 
