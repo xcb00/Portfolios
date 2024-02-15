@@ -154,6 +154,308 @@
 </details>
 </details>
 
+<details>
+<summary>RoomCoordinateClass.cs</summary>
+
+> - 에디터창에서 노드를 연결할 때, 노드의 ID와 좌표(coordination)를 저장하는 클래스
+> - 게임 내에서 던전을 생성할 때, 좌표를 기반으로 던전이 생성 및 이동
+>   > 입구를 원점(0, 0)으로, 플레이어가 위치한 방만 활성화 시킴
+> - 노드 ID와 좌표를 한 쌍으로 가지지만, ID로 좌표를 찾거나 좌표로 ID를 찾는 경우 모두 발생하기 때문에 `Dictionary`를 사용하지 않고 `List<struct>`를 사용
+>
+> <details>
+> <summary>struct RoomCoordination</summary>
+> 
+> ```C#
+> public string id;
+> public Vector2Int coordination;
+> public RoomCoordination(string id, Vector2Int coordination)
+> {
+>   this.id = id;
+>   this.coordination = coordination;
+> }
+> ```
+> </details>
+> 
+> <details>
+> <summary>class RoomCoordinateClass</summary>
+> 
+> ```C#
+> // 노드를 연결할 때, 부모 노드를 가지고 있지 않은 경우 연결할 수 없도록 함
+> // 입구는 Root 노드로, 부모 노드를 가질 수 없기 때문에 예외처리를 위해 입구 노드의 ID를 저장
+> string entranceID = string.Empty;
+> List<RoomCoordination> roomCoordinations;
+> public RoomCoordinateClass
+> public RoomCoordination(string entranceID)
+> {
+>   this.entranceID = entranceID;
+>   Clear();
+> }
+> public void Clear()
+> {
+>   if(roomCoordinations == null) 
+>     roomCoordinations = new List<RoomCoordination>();
+>   else 
+>     roomCoordinations.Clear();
+>   roomCoordinations.Add(new RoomCoordination(entranceID, Vector2Int.zero));
+> }
+> public Vector2Int GetRoomCoordination(string id
+> {
+>   if(roomCoordinations.Count < 1)
+>     return Vector2Int.zero;
+>   foreach(RoomCoordination room in roomCoordinations)
+>   {
+>     if(room.id.Equals(id))
+>       return room.coordinatinon;
+>   }
+>   return Vector2Int.zero;
+> }
+> public string GetRoomID(Vector2Int coordination)
+> {
+>   if(roomCoordinations.Count < 1)
+>     return string.Empty;
+>   foreach(RoomCoordination room in roomCoordinations)
+>   {
+>     if(room.coordination == coordination)
+>       return room.id;
+>   }
+>   return string.Empty;
+> }
+> public bool ContainCoordination(Vector2Int coordination)
+> {
+>   foreach(RoomCoordination room in roomCoordinations)
+>   {
+>     if(room.coordination == coordination)
+>       return true;
+>   }
+>   return false;
+> }
+> public bool ContainID(string id)
+> {
+>   foreach(RoomCoordination room in roomCoordinations)
+>   {
+>     if(room.id.Equals(id))
+>       return true;
+>   }
+>   return false;
+> }
+> public void Remove(string id)
+> {
+>   int idx = -1;
+>   for(int i = 0; i 〈 roomCoordinations.Count; i++)
+>   {
+>     if(roomCoordinations[i].id.Equals(id))
+>     {
+>       idx = i;
+>       break;
+>     }
+>   }
+>   if(idx 〉0)
+>     roomCoordinations.RemoveAt(idx);
+> }
+> public bool AddRoom(string currentID, string childID)
+> {
+>   Vector2Int current = GetRoomCoordination(currentID);
+>   if(current == Vector2.zero && !entranceID.Equals(currentID))
+>     return false; // 입구와 연결되지 않은 노드를 부모 노드로 가질 수 없음
+>   int count = 0;
+>   int startDir = Random.Range(0, 4); // 자식 노드의 좌표를 부여할 때, 규칙성을 없애기 위해 Random 사용
+>   for(count = 0; count〈 4; count++)
+>   {
+>     if(!ContainCoordination(current + GetDirection(startDir + count)))
+>       break;
+>   }
+>   if(count 〉3)
+>     return false; // 현재 노드의 상하좌우에 이미 다른 노드가 있어 자식 노드를 추가할 수 없음
+>   roomCoordinations.Add(new RoomCoordination(childID, current + GetDirection(startDir + count)));
+>   return true;
+> }
+> Vector2Int GetDirection(int i) 
+> {
+>   switch (i % 4)
+>   {
+>     case 0: return Vector2Int.up;
+>     case 1: return Vector2Int.right;
+>     case 2: return Vector2Int.down;
+>     case 3: return Vector2Int.left;
+>     default: return Vector2Int.zero;
+>   }
+> }
+> ```
+> </details>
+</details>
+
+<details>
+<summary>DungeonGraphEditor.cs</summary>
+
+> - 커스텀 에디터 창에 그래프를 그리고 저장하는 스크립트
+> - `OnGUI`에서 `GUILayout`을 그리고, `Event.current`를 이용해 입력을 처리
+>
+> 
+> <details>
+> <summary>Delete Node</summary>
+> 
+> ```C#
+> 
+> ```
+> </details>
+> 
+> <details>
+> <summary>Graph Generate</summary>
+> 
+> ```C#
+> void GenerateGraph()
+> {
+>   if(graph.roomList.Count 〈 1) // 생성된 노드가 없다면 노드 생성(입구와 보스룸 노드 생성)
+>     CreateRoomNode();
+> 
+>   // 입구와 보스룸 노드를 제외한 모든 노드를 삭제
+>   AllSelect(); // graph.roomList에 있는 모든 DungeonRoomSO의 isSelected를 true로 변경
+>   DeleteSelectedRoomNodes(); // 선택한 모든 노드 삭제(입구와 보스룸은 삭제되지 않음)
+> 
+> 
+>   roomCount = Random.Range(minRoom, maxRoom + 1); // 생성할 방의 개수를 설정
+>   Queue<DungeonRoomSO> rooms = new Queue<DungeonRoomSO>()
+>   rooms.Enqueue(graph.roomList[0]);
+>   AutoGenerate(rooms);
+>   RoomReposition(); 
+>   
+>   // RoomReposition에서 상하좌우에 이미 노드가 있어 삭제된 노드의 개수만큼 추가
+>   int max = maxAttempt; // Graph Generator에서 while문을 반복할 최대 횟수로, while문에서 무한반복 방지
+>   rooms.Clear(); // while문 안에서 rooms를 클리어할 경우 새로 생성될 방들이 roomList의 뒷쪽에 있는 방들의 자식들로만 생성됨기 때문에 특정 노드의 깊이만 증가됨
+>   int depth = graph.roomList[graph.roomList.Count - 1].depth;
+>   while(graph.roomList.Count 〈 roomCount)
+>   {
+>     if(--max 〈 0) break; // 최대 반복 횟구에 도달하면 while문 종료
+>     for(int i = graph.roomList.Count - 1; i 〉0; i--)
+>     {
+>       if(depth - graph.roomList[i].depth 〉4) break; // depth가 작을수록 상하좌우에 다른 노드들이 있을 경우가 크기 때문에 조건을 주어 성능을 최적화시킴
+>       rooms.Enqueue(graph.roomList[i]);
+>     }
+>     AutoGenerate(rooms);
+>     RoomReposition();
+>   }
+>   ConnectBossRoom();
+> }
+> 
+> void AutoGenerate(Queue<DungeonRoomSO> rooms)
+> {
+>   graph.roomPositioned = false;
+>   while(rooms.Count 〉0)
+>   {
+>     if(roomCount 〈= graph.roomList.Count) // 노드의 개수가 roomCount와 크거나 같다면 노드 생성을 종료
+>       break;
+>     DungeonRoomSO current = rooms.Dequeue();
+>     if(CreateChild(current)) // 현재 노드에 자식 노드를 추가한 경우 true
+>     {
+>       foreach(string childID in current.childrenID)
+>         rooms.Enqueue(graph.GetRoomNode(childID)); 
+>     }
+>   }
+> }
+> 
+> bool CreateChild(DungeonRoomSO room)
+> {
+>   if(room.childrenID.Count > 0)
+>     return false;
+>   for(int i = 0; i 〈 3; i++)
+>   {
+>     RoomType type = GetRandomRoomType(); // GraphGenerator에서 설정한 RoomType 확률에 따라 랜덤하게 RoomType 반환
+>     if(type == RoomType.None) break;
+>     CreateRoom(type, room);
+>   }
+> 
+>   if(room.childrenID.Count 〈 1) // GetRandomRoomType이 모두 RoomType.None을 반환해 자식을 추가하지 못한 경우 SmallRoom 타입을 자식으로 추가
+>     CreateRoom(RoomType.SmallRoom, room);
+>   return true;
+> }
+> 
+> void CreateRoom(RoomType roomType, DungeonRoomSO currentRoom)
+> {
+>   DungeonRoomSO child = ScriptableObject.CreateInstance<DungeonRoomSO>(); // 스크립터블 오브젝트 생성
+>   graph.roomList.Add(child);
+>   // nodeRect : 에디터 창에 그릴 노드의 Rect 정보로, new Rect(Vector2.zero, nodeSize)
+>   // graph : 에디터 창에 활성화되어있는 DungeonGraphSO
+>   child.Initialise(nodeRect, roomType, graph);
+>   
+>   // graph.roomList에 추가한 DungeonRoomSO를 graph.roomDictionary에도 추가
+>   // nodeID를 이용해 DugeonRoomSO에 쉽게 접근할 수 있도록 Dictionary<string, DungeonRoomSO>를 사용
+>   graph.AddLastRoomOfListToDictionary(); 
+>   
+>   if(currentRoom.AddChildID(child.id))
+>     child.AddParentID(currentRoom.id);
+>   AssetDatabase.AddObjectToAsset(child, graph;
+>   AssetDatabase.SaveAssets();
+> }
+> 
+> void ConnectBossRoom()
+> {
+>   for(int i = graph.roomList.Count - 1; i 〉=0; i--)
+>   {
+>     if(graph.roomList[i].childrenID.Count 〉2) continue;
+>     
+>     DungeonRoomSO room = graph.roomList[i];
+>     if(room.AddChildID(graph.roomList[1].id))
+>     {  
+>       graph.roomList[1].AddParentID(room.id);
+>       break;
+>     }
+>   }
+> 
+>   Vector2Int coordinate = graph.roomCoordinateClass.GetRoomCoordinate(graph.roomList[1].id);
+>   // center : 커스텀 윈도우의 중심
+>   graph.roomList[1].rect.position = new Vector2(nodeSize.x * coordinate.x + 50f, nodeSize.y * -coordinate.y + 50f) + center; 
+>   GUI.changed = true;
+> }
+> ```
+> </details>
+> 
+> <details>
+> <summary>Node Coordinate</summary>
+> 
+> ```C#
+> void RepositionRoom()
+> {
+>   if(graph.roomList.Count 〈 1)
+>     return;
+>   UpdateDepth(); // Node의 Depth값을 갱신
+>   RoomReposition();
+>   
+>   if(!connectBossRoom) // 보스룸이 입구와 연결되지 않았을 경우 보스룸을 입구의 위치로 이동
+>     graph.roomList[1].rect.position = graph.roomList[0].rect.position + Vector2.one * 50f;
+> }
+> 
+> void RoomReposition()
+> {
+>   // graph에 변화가 없는 경우 node들을 coordination에 맞춰 이동
+>   if(graph.roomPositioned)
+>   {
+>     MoveRoomNode();
+>     return;
+>   }
+> 
+>   ResetSelect(); // 선택되어 있는 노드들을 선택 해제함
+>   Queue<DungeonRoomSO> rooms = new Queue<DunteonRoomSO>();
+>   graph.roomCoordinateClass.Clear();
+>   
+>   while(rooms.Count 〉0)
+>   {
+>     DungeonRoomSO current = rooms.Dequeue();
+>     foreach(string childID in current.childrenID)
+>     {
+>       if(graph.roomCoordinateClass.AddRoom(current.id, childID)) // current 노드에 자식 노드를 추가할 수 있디면 추가
+>         rooms.Enqueue(graph.GetRoomNode(childID));
+>       else 
+>         SelectChildren(childID); // current 노드에 자식 노드를 추가할 수 없다면 현재 노드와 연결된 모든 자식 노드를 삭제를 위해 isSelected를 true로 변경
+>     }
+>   }
+>   DeleteSelectedRoomNodes();
+>   DeleteDisconnectRoom(); // 연결되지 않은 모든 노드들을 삭제함
+>   MoveRoomNode(); // 에디터 윈도우의 원점을 (0, 0)으로 node의 coordination에 따라 node를 이동
+> }
+> ```
+> </details>
+</details>
+
 
 ### Dungeon Graph Editor를 이용해 던전 생성
 [던전 생성]("www.naver.com")
