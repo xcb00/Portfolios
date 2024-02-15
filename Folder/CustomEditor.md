@@ -295,7 +295,45 @@
 > <summary>Delete Node</summary>
 > 
 > ```C#
+> void DeleteSelectedRoomNode()
+> {
+>   // 리스트를 반복문을 이용해 탐색할 때, 반복문 안에서 리스트의 값을 생성/삭제 시 오류가 발생할 수 있기 때문에 큐에 삭제할 노드를 추가한 후 반복문 종료 후 일괄삭제
+>   Queue<DungeonRoomSO> delete = new Queue<DungeonRoomSO>();
+>   foreach(DungeonRoomSO room in graph.roomList)
+>   {
+>     if (room.isSelected)
+>     {
+>       // 노드를 먼저 삭제하면 다른 노드들과의 연결을 처리하는 것이 어렵기 때문에 먼저 현재 노드와 연결된 노드들의 연결을 해제
+>       if(!string.IsNullOrEmpty(room.parentID))
+>         graph.DisconnectNode(room.id, room.parentID, false); 
+>       foreach(string childID in room.childrenID)
+>         graph.DisconnectNode(room.id, childID, true); 
+>       graph.roomCoordinateClass.Remove(room.id);
+>       delete.Emqueue(room);
+>     }
+>   }
 > 
+>   while(delete.Count 〉0)
+>   {
+>     DungeonRoomSO deleteRoom = delete.Dequeue();
+>     if(deleteRoom.roomType == RoomType.BossRoom) // 삭제하려는 노드가 보스룸일 경우 부모 노드의 ID를 삭제
+>     {
+>       deleteRoom.parentID = string.Empty;
+>       continue;
+>     }
+>     else if(deleteRoom.roomType == RoomType.Entrance) // 삭제하려는 노드가 입구일 경우 자식 노드들을 삭제
+>     {
+>       deleteRoom.childrenID.Clear();
+>       continue;
+>     }
+>     
+>     graph.roomDictionary.Remove(deleteRoom.id);
+>     graph.roomList.Remove(deleteRoom);
+>     DestroyImmediate(deleteRoom, true);
+>     AssetDatabase.SaveAssets();
+>   }
+>   graph.roomPositioned = false;
+>   UpdateDepth();
 > ```
 > </details>
 > 
