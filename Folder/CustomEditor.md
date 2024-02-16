@@ -238,20 +238,40 @@
 >   }
 >   return false;
 > }
+> 
 > public void Remove(string id)
 > {
->   int idx = -1;
->   for(int i = 0; i 〈 roomCoordinations.Count; i++)
+>   if(!graph.roomDictionary.ContainsKey(id)) return; // 이미 지웠다면 종료
+>   Queue<string>rooms = new Queue<string>();
+>   rooms.Enqueue(id);
+>   
+>   while(rooms.Count 〉0)
 >   {
->     if(roomCoordinations[i].id.Equals(id))
+>     DungeonRoomSO current = graph.GetRoomNode(rooms.Dequeue());
+>     
+>     // 현재 노드와 부모 노드와의 연결 해제
+>     graph.GetRoomNode(current.id).parentID = string.Empty;
+> 
+>     // 현재 노드가 자식 노드가 있다면 현재 노드와 연결된 모든 노드들의 연결 해제하기 위해 rooms에 추가
+>     foreach(string childID in current.childrenID)
+>       rooms.Enqueue(childID);
+>     current.childrenID.Clear();
+> 
+>     // roomCoordinations에 current 삭제
+>     int idx = -1;
+>     for(int i = 0; i 〈 roomCoordinations.Count; i++)
 >     {
->       idx = i;
->       break;
+>       if(roomCoordinations[i].id.Equals(current.id))
+>       {
+>         idx = i;
+>         break;
+>       }
 >     }
+>     if(idx 〉0)
+>       roomCoordinations.RemoveAt(idx);
 >   }
->   if(idx 〉0)
->     roomCoordinations.RemoveAt(idx);
 > }
+> 
 > public bool AddRoom(string currentID, string childID)
 > {
 >   Vector2Int current = GetRoomCoordination(currentID);
@@ -305,10 +325,9 @@
 >     {
 >       // 노드를 먼저 삭제하면 다른 노드들과의 연결을 처리하는 것이 어렵기 때문에 먼저 현재 노드와 연결된 노드들의 연결을 해제
 >       if(!string.IsNullOrEmpty(room.parentID))
->         graph.DisconnectNode(room.id, room.parentID, false); 
+>         graph.DisconnectNode(room.id, room.parentID, false); // graph.DisconnectNode에서 RoomCoordinateClass의 Remove 실행
 >       foreach(string childID in room.childrenID)
 >         graph.DisconnectNode(room.id, childID, true); 
->       graph.roomCoordinateClass.Remove(room.id);
 >       delete.Emqueue(room);
 >     }
 >   }
@@ -490,7 +509,7 @@
 >   DeleteDisconnectRoom(); // 연결되지 않은 모든 노드들을 삭제함
 >   MoveRoomNode(); // 에디터 윈도우의 원점을 (0, 0)으로 node의 coordination에 따라 node를 이동
 > }
-> ```
+> ```  
 > </details>
 </details>
 
