@@ -36,7 +36,7 @@
 <details>
 <summary>Dev Log</summary>
 
-> [1일차](https://github.com/xcb00/Portfolios/blob/main/Folder/DevLog/FindExit_01.md)
+> - [1일차](https://github.com/xcb00/Portfolios/blob/main/Folder/DevLog/FindExit_01.md)
 </details>
 
 
