@@ -11,7 +11,25 @@
 ### 모바일 배그
 > - 캐릭터 조작 방법을 밴치마킹해 제작
 
+# 제작
+## 스크립트
+<details>
+<summary>Show Scripts</summary>
 
+> - Camera
+>   > - SpringArm : 카메라의 Rotation/Zoom을 구현하는 스크립트
+> - Manager
+>   > - Settings : 게임의 설정참에서 값을 조절할 수 있는 변수들을 관리하는 스크립트
+>   > - DataManager : 게임의 데이터를 관리하는 스크립트로, JSON을 이용해 데이터를 관리
+>   > - GameManager : 전반적인 게임의 흐름을 관리하는 스크립트
+> - Misc
+>   > - EventHandler : 옵저버 패턴과 같이 특정 이벤트가 발생될 때 실행할 함수(메소드)를 관리하는 스크립트
+>   > - Singleton : 싱글톤 패턴을 사용하기 위한 스크립트
+> - 1
+> - 2
+> - 3
+> - 
+</details>
 
 
 
