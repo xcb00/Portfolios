@@ -20,19 +20,19 @@
   > >   <details>
   > >   <summary>Camera/Canvas Ratio 적용 전</summary>
   > >   
-  > >   
+  > >   ![Camera/Canvas Ratio 적용 전](https://github.com/xcb00/Portfolios/blob/main/Folder/Resources/Ratio1.png)
   > >   </details>
   > > 
   > >   <details>
   > >   <summary>설정한 해상도보다 가로가 길 경우</summary>
   > >   
-  > >   
+  > >   ![설정한 해상도보다 가로가 길 경우](https://github.com/xcb00/Portfolios/blob/main/Folder/Resources/Ratio2.png)
   > >   </details>
   > > 
   > >   <details>
   > >   <summary>설정한 해상도보다 세로가 길 경우</summary>
   > >   
-  > >   
+  > >   ![설정한 해상도보다 세로가 길 경우](https://github.com/xcb00/Portfolios/blob/main/Folder/Resources/Ratio3.png)
   > >   </details>
   > > 
   > </details>
