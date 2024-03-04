@@ -12,3 +12,27 @@
 - 다양한 모바일 해상도에 대응하기 위해 고정 해상도 사용
   > - 디바이스의 해상도가 설정한 해상도와 맞지 않는 경우 검은색 레터박스 생성
   > - 카메라 해상도에 맞춰 캔버스의 크기 조절
+  > <details>
+  > <summary>Show Deatils</summary>  
+  > 
+  > > - 빨간색 : CanvasRatio를 사용한 캔버스
+  > > - 노란색 : CanvasRatio를 사용하지 않은 캔버스
+  > >   <details>
+  > >   <summary>Camera/Canvas Ratio 적용 전</summary>
+  > >   
+  > >   
+  > >   </details>
+  > > 
+  > >   <details>
+  > >   <summary>설정한 해상도보다 가로가 길 경우</summary>
+  > >   
+  > >   
+  > >   </details>
+  > > 
+  > >   <details>
+  > >   <summary>설정한 해상도보다 세로가 길 경우</summary>
+  > >   
+  > >   
+  > >   </details>
+  > > 
+  > </details>
