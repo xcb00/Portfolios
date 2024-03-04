@@ -10,7 +10,7 @@
 > - 던전 관련 부분을 밴치마킹해 제작
 ### 모바일 배그
 > - 캐릭터 조작 방법을 밴치마킹해 제작
-
+---
 # 제작
 ## 스크립트
 <details>
@@ -30,6 +30,16 @@
 > - 3
 > - 
 </details>
+
+
+## 스크립트
+<details>
+<summary>Dev Log</summary>
+
+> [1일차](https://github.com/xcb00/Portfolios/blob/main/Folder/DevLog/FindExit_01.md)
+</details>
+
+
 
 
 
