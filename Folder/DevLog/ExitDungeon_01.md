@@ -1,7 +1,7 @@
 ##### 2024. 03. 04.
 
 ### 목표
-1. 조이스틱으로 플레이어를 움직일 수 있도록 함
+1. ~~조이스틱으로 플레이어를 움직일 수 있도록 함~~
 2. 화면 드레그를 이용해 SpringArm 기능 구현
 3.  DataManager를 이용해 JSON으로 데이터를 저장하도록 함
 
@@ -39,12 +39,87 @@
 ##### 2024. 03. 05.
 
 ### 목표
-1. 조이스틱으로 플레이어를 움직일 수 있도록 함
-2. 화면 드레그를 이용해 SpringArm 기능 구현
-3.  DataManager를 이용해 JSON으로 데이터를 저장하도록 함
+1. ~~화면 드레그를 이용해 SpringArm 기능 구현~~
+2. DataManager를 이용해 JSON으로 데이터를 저장하도록 함
 
 ### 완료
 - 가상 조이스틱 구현 및 조이스틱으로 플레이어 이동
 - 화면 드레그로 x, y축 회전 구현
+
+##### 2024. 03. 07.
+
+### 목표
+1. DataManager를 이용해 JSON으로 데이터를 저장하도록 함
+2. 세팅창 구현 및 세팅창의 값을 JSON으로 저장
+3. 조준점 및 공격 구현
+
+### 완료
+- Enum Caching : ToString()을 사용할 경우 박싱이 일어나기 때문에, Caching을 통해 자주 사용하는 enum값을 저장
+  > enum을 문자열처럼 사용하는 이유 : 가독성과 유지보수를 용의하게 하기 위해서 이용하며, ToString 사용으로 인한 성능 저하를 Caching으로 보완함
+- DataManager를 이용해 클래스/구조체를 JSON 형식으로 저장
+  > <details>
+  > <summary>Show Script</summary>
+  > 
+  > **DataClass.cs**
+  > ```C#
+  > // 클래스/구조체 리스트를 JSON 형식으로 저장하기 위한 구조체
+  > [System.Serializable]
+  > public struct DataList<T>
+  > {
+  >   public List<T> dataList;
+  >   public DataList(List<T> dataList) =〉this.dataList = dataList;
+  > }
+  > ```
+  > **DataManager.cs**
+  > ```C#
+  > StringBuilder strBuilder = new StringBuilder();
+  > public string GetFilePath(JsonFileName name) // 'name.txt' 파일로 저장할 경로를 반환
+  > 
+  > // data 구조체/클래스를 Json형식으로 '../name.txt'파일로 저장
+  > public void SaveDataToJson<T>(JsonFileName name, T data) =〉File.WriteAllText(GetFilePath(name), JsonUtility.ToJson(data)); 
+  > 
+  > // 구조체/클래스 리스트를 Json형식으로 '../name.txt'파일로 저장
+  > public void SaveDataListToJson<T>(JsonFileName name, List<T> dataList) =〉File.WriteAllText(GetFilePath(name), DataListToJsonString(dataList));
+  > 
+  > // 구조체/클래스 리스트를 Json형식의 문자열로 변환
+  > public string DataListToJsonString<T>(List<T> data) =〉JsonUtility.ToJson(new DataList<T>(data));
+  > 
+  > // Json 형식의 문자열을 구조체/클래스로 불러오기
+  > public T LoadJsonToData<T>(JsonFileNae name, ref bool fileExists)
+  > {
+  >   string path = GetFilePath(name);
+  >   if(!File.Exists(path)) // 데이터가 존재하는지 확인
+  >   {
+  >     fileExists = false;
+  >     return default(T);
+  >   }
+  >   fileExists = true;
+  >   return JsonUtility.FromJson<T>(File.ReadAllText(path));
+  > }
+  > 
+  > // Json 형식의 문자열을 구조체/클래스 리스트로 불러오기
+  > public T LoadJsonToData<T>(JsonFileNae name, ref bool fileExists)
+  > {
+  >   string path = GetFilePath(name);
+  >   if(!File.Exists(path)) // 데이터가 존재하는지 확인
+  >     return new List<T>();
+  > 
+  >   return JsonStringToDataList<T>(File.ReadAllText(path));
+  > }
+  > 
+  > // Json 형식의 문자열을 구조체/클래스 리스트로 변환
+  > public List<T> JsonStringToDataList<T>(string jsonString) =〉string.IsNullOrEmpty(jsonString) ? new List<T>() : JsonUtility.FromJson<DataList<T>>(jsonString).dataList;
+  > 
+  > ```
+  > </details>
+  > 
+
+
+
+
+
+
+
+
 
 
