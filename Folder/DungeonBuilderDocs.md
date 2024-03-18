@@ -10,7 +10,9 @@
 3. Minimap Camera의 Culling Mask를 Minimap으로 변경
 4. DoorPrefab의 Tag 설정
     > - 2D 또는 3D Door Prefab에서 Collider 오브젝트의 Tag를 DoorCollider로 변경
-    > - 2D 또는 3D Door Prefab에서 Trigger 오브젝트의 Tag를 DoorTrigger로 변경 
+    > - 2D 또는 3D Door Prefab에서 Trigger 오브젝트의 Tag를 DoorTrigger로 변경
+5. Minimap에 MinimapPrefab 바인딩
+6. 1
 
 ### 에디터 키
 - 숫자 1 : 문 열기(다음 방으로 이동할 수 있도록 함)
