@@ -5,10 +5,10 @@
 ### How to use
 1. DungeonBuilder를 3D에서 사용할 경우 `CustomWindow > Misc`에서 `CustomCoordinateBrush.cs`를 삭제
    > `CustomCoordinateBrush`는 Tilemap에서 브러쉬 위치의 좌표를 출력해주는 브러쉬로, `RoomData2D`에 좌표값을 넣을 때 사용
-3. `Create > Scriptable Objects > Dungeon Map`으로 `DungeonMap` Scriptable Object 생성
-4. `Custom Editor > Dungeon Map Editor` 또는 생성한 `Dungeon Map Scriptable Object`를 더블 클릭으로 `Dungeon Map Editor`창 열기
-5. `Dungeon Map Editor`에서 맵 생성하기 [Dungeon Map Editor Menual]()
-6. `Create > Scriptable Objects > RoomData > Dungeon Room Data 2D/3D`로 `RoomData2D/3D` Scripatble Object를 생성
+2. `Create > Scriptable Objects > Dungeon Map`으로 `DungeonMap` Scriptable Object 생성
+3. `Custom Editor > Dungeon Map Editor` 또는 생성한 `Dungeon Map Scriptable Object`를 더블 클릭으로 `Dungeon Map Editor`창 열기
+4. `Dungeon Map Editor`에서 맵 생성하기 [Dungeon Map Editor Menual]()
+5. `Create > Scriptable Objects > RoomData > Dungeon Room Data 2D/3D`로 `RoomData2D/3D` Scripatble Object를 생성
    > 게임에서 던전을 생성할 때 생성할 방의 정보를 가지는 Scriptable Object
    > <details>
    > <summary>Dungeon Room 2D</summary>
@@ -33,7 +33,7 @@
    >   > - Wall Prefab : 다른 방과 연결되지 않은 방향에 문 대신 생성할 벽 오브젝트
    > - Spawn Position : 몬스터, 상자 등 오브젝트들이 생성될 위치
    > </details>
-7. `Create > Scriptable Objects > Dungeon Level`로 `DugeonLevel` Scriptable Object 생성
+6. `Create > Scriptable Objects > Dungeon Level`로 `DugeonLevel` Scriptable Object 생성
    > <details>
    > <summary>Dungeon Level</summary>
    > 
@@ -41,7 +41,7 @@
    >   > **Room List의 첫 번째 요소에 의해 2D/3D가 결정되며, 첫 번째 요소와 다른 차원의 RoomData를 넣을 경우 추가되지 않음**
    > - Dugeon Map List : `Dungeon Map`의 List로, 게임에서 던전을 생성할 때 랜덤으로 선택해 생성
    > </details>
-8. `Hierarchy`에 빈 게임 오브젝트를 생성한 후 `DungeonBuilder.cs` 추가
+7. `Hierarchy`에 빈 게임 오브젝트를 생성한 후 `DungeonBuilder.cs` 추가
    > <details>
    > <summary>Dungeon Builder</summary>
    > 
@@ -52,40 +52,40 @@
    > - Minimap : `Hierarchy`에서 `Minimap.cs`를 가지고 있는 오브젝트로, Minimap을 관리하는 오브젝트
    > - Dungeons : 게임에서 생성할 `DungeonLevel` 리스트
    > </details>
-9. `Hierarchy`에 빈 게임 오브젝트를 생성한 후 `Minimap.cs` 추가
-    > <details>
-    > <summary>Minimap</summary>
-    > 
-    > - `Minimap.cs`의 `ActiveMinimap`로 Minimap을 활성화하고, `InactiveMinimap`로 비활성화
-    > - Minimap Room : Minimap에서 방를 나타낼 게임 오브젝트로, Layer를 `Minimap`으로 설정
-    > - Minimap Doorway : Minimap에서 방과 방의 연결을 나타낼 게임 오브젝트로, Layer를 `Minimap`으로 설정
-    > - Player Obj : Minimap에서 플레이어의 위치를 나타낼 게임 오브젝트로, Layer를 `Minimap`으로 설정
-    > - Drag Speed : `MinimapUI`에서 드레그를 할 때, `MinimapCamera`를 움직이는 속도
-    > - Pinch Speed : `MinimapUI`에서 Pinch를 할 때, `MinimapCamera`의 Size 증감 속도
-    > - Pinch Range : `MinimapUI`에서 Pinch를 할 때, `MinimapCamera`의 Size의 범위
-   > </details>
-10. `Hierarchy`의 Minimap에 자식으로 MinimapCamera를 추가
-   > <details>
-   > <summary>Minimap Camera Setting</summary>
-   > 
-   > 1. `Clear Flags`를 `Solid Color`로 변경
-   > 2. `Culling Mask`를 `Minimap`으로 변경
-   > 3. `Projection`을 `Orthographic`으로 변경
-   > 4. `Target Texture`를 `Minimap Texture`로 설정
-   > </details>
-11. `Hierarchy`에 MinimamCamera로 찍은 화면을 출력할 `MinimapUI` 추가
-   > <details>
-   > <summary>Minimap UI</summary>
-   > 
-   > 1. `Canvas`에 `RawImage`추가한 후 `Texture`에 `MinimapTexture` 설정
-   > 2. `RawImage`에 `MinimapUI.cs` 추가
-   >    > - `Drag Event`에 `Minimap` 오브젝트의 `Minimap.DragEvent` 추가
-   >    > - `Pinch Event`에 `Minimap` 오브젝트의 `Minimap.PinchEvent` 추가
-   > </details>
-12. `DungeonBuilder`를 에디터에서 테스트할 경우 입력 키
-   > - 숫자 1 : 문 열기(다음 방으로 이동할 수 있도록 함)
-   > - 숫자 2 : 문 닫기
-   > - R : 던전을 새로 만듦
-13. 외부 스크립트에서 `DungeonBuilder`를 참조해 사용할 경우, `DungeonBuilder.cs`의 `Update`문을 삭제
+8. `Hierarchy`에 빈 게임 오브젝트를 생성한 후 `Minimap.cs` 추가
+      > <details>
+      > <summary>Minimap</summary>
+      > 
+      > - `Minimap.cs`의 `ActiveMinimap`로 Minimap을 활성화하고, `InactiveMinimap`로 비활성화
+      > - Minimap Room : Minimap에서 방를 나타낼 게임 오브젝트로, Layer를 `Minimap`으로 설정
+      > - Minimap Doorway : Minimap에서 방과 방의 연결을 나타낼 게임 오브젝트로, Layer를 `Minimap`으로 설정
+      > - Player Obj : Minimap에서 플레이어의 위치를 나타낼 게임 오브젝트로, Layer를 `Minimap`으로 설정
+      > - Drag Speed : `MinimapUI`에서 드레그를 할 때, `MinimapCamera`를 움직이는 속도
+      > - Pinch Speed : `MinimapUI`에서 Pinch를 할 때, `MinimapCamera`의 Size 증감 속도
+      > - Pinch Range : `MinimapUI`에서 Pinch를 할 때, `MinimapCamera`의 Size의 범위
+      > </details>
+9. `Hierarchy`의 Minimap에 자식으로 MinimapCamera를 추가
+      > <details>
+      > <summary>Minimap Camera Setting</summary>
+      > 
+      > 1. `Clear Flags`를 `Solid Color`로 변경
+      > 2. `Culling Mask`를 `Minimap`으로 변경
+      > 3. `Projection`을 `Orthographic`으로 변경
+      > 4. `Target Texture`를 `Minimap Texture`로 설정
+      > </details>
+10. `Hierarchy`에 MinimamCamera로 찍은 화면을 출력할 `MinimapUI` 추가
+      > <details>
+      > <summary>Minimap UI</summary>
+      > 
+      > 1. `Canvas`에 `RawImage`추가한 후 `Texture`에 `MinimapTexture` 설정
+      > 2. `RawImage`에 `MinimapUI.cs` 추가
+      >    > - `Drag Event`에 `Minimap` 오브젝트의 `Minimap.DragEvent` 추가
+      >    > - `Pinch Event`에 `Minimap` 오브젝트의 `Minimap.PinchEvent` 추가
+      > </details>
+11. `DungeonBuilder`를 에디터에서 테스트할 경우 입력 키
+      > - 숫자 1 : 문 열기(다음 방으로 이동할 수 있도록 함)
+      > - 숫자 2 : 문 닫기
+      > - R : 던전을 새로 만듦
+12. 외부 스크립트에서 `DungeonBuilder`를 참조해 사용할 경우, `DungeonBuilder.cs`의 `Update`문을 삭제
 
 ### 에디터 키
