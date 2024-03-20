@@ -53,16 +53,16 @@
    > - Dungeons : 게임에서 생성할 `DungeonLevel` 리스트
    > </details>
 9. `Hierarchy`에 빈 게임 오브젝트를 생성한 후 `Minimap.cs` 추가
-   > <details>
-   > <summary>Minimap</summary>
-   > 
-   > - `Minimap.cs`의 `ActiveMinimap`로 Minimap을 활성화하고, `InactiveMinimap`로 비활성화
-   > - Minimap Room : Minimap에서 방를 나타낼 게임 오브젝트로, Layer를 `Minimap`으로 설정
-   > - Minimap Doorway : Minimap에서 방과 방의 연결을 나타낼 게임 오브젝트로, Layer를 `Minimap`으로 설정
-   > - Player Obj : Minimap에서 플레이어의 위치를 나타낼 게임 오브젝트로, Layer를 `Minimap`으로 설정
-   > - Drag Speed : `MinimapUI`에서 드레그를 할 때, `MinimapCamera`를 움직이는 속도
-   > - Pinch Speed : `MinimapUI`에서 Pinch를 할 때, `MinimapCamera`의 Size 증감 속도
-   > - Pinch Range : `MinimapUI`에서 Pinch를 할 때, `MinimapCamera`의 Size의 범위
+    > <details>
+    > <summary>Minimap</summary>
+    > 
+    > - `Minimap.cs`의 `ActiveMinimap`로 Minimap을 활성화하고, `InactiveMinimap`로 비활성화
+    > - Minimap Room : Minimap에서 방를 나타낼 게임 오브젝트로, Layer를 `Minimap`으로 설정
+    > - Minimap Doorway : Minimap에서 방과 방의 연결을 나타낼 게임 오브젝트로, Layer를 `Minimap`으로 설정
+    > - Player Obj : Minimap에서 플레이어의 위치를 나타낼 게임 오브젝트로, Layer를 `Minimap`으로 설정
+    > - Drag Speed : `MinimapUI`에서 드레그를 할 때, `MinimapCamera`를 움직이는 속도
+    > - Pinch Speed : `MinimapUI`에서 Pinch를 할 때, `MinimapCamera`의 Size 증감 속도
+    > - Pinch Range : `MinimapUI`에서 Pinch를 할 때, `MinimapCamera`의 Size의 범위
    > </details>
 10. `Hierarchy`의 Minimap에 자식으로 MinimapCamera를 추가
    > <details>
