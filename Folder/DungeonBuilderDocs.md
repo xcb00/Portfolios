@@ -13,7 +13,21 @@
    > <details>
    > <summary>Dungeon Room 2D</summary>
    > 
-   > - Hello World
+   > - Room Prefab : 게임에서 생성할 Room을 Prefab으로 만든 GameObject
+   > - Room Type : Room Prefab의 타입
+   > - Doorways : 다른 방으로 이동할 문의 정보를 가지는 `Room2DDoorClass`의 배열
+   >   > - Orientation : 동서남북 중 문의 위치
+   >   > - Width : 통로의 너비로, 다른 방과 연결되지 않은 통로를 벽으로 만들기 위해 사용
+   >   > - Height : 통로의 높이로, 다른 방과 연결되지 않은 통로를 벽으로 만들기 위해 사용
+   >   > - Door Position : 문이 생성될 위치
+   >   > - Copy Position : 통로를 벽으로 만들기 위해 타일을 복사를 시작할 위치
+   >   > - Door Prefab : 다른 방으로 이동하기 위한 문 오브젝트
+   >   >   > 1. Door Prefab을 만들 때, `Door Collider`와 `Door Trigger`를 자식으로 생성한 후 `DoorCollider2D.cs`와 `DoorTrigger2D.cs`를 각각 추가
+   >   >   > 2. Door Prefab에서 Collider 오브젝트의 Tag를 DoorCollider로 변경
+   >   >   > 3. Door Prefab에서 Trigger 오브젝트의 Tag를 DoorTrigger로 변경
+   >   >   > - DoorCollider : 문이 닫혀있을 때, 플레이어가 문을 지나가지 못하도록 하는 오브젝트
+   >   >   > - DoorTrigger : 문이 열렸을 때, 플레이어가 다음 방으로 이동하는 메소드를 실행
+   > - Spawn Position : 몬스터, 상자 등 오브젝트들이 생성될 위치
    > </details>
    > 
    > <details>
@@ -21,11 +35,11 @@
    > 
    > - Room Prefab : 게임에서 생성할 Room을 Prefab으로 만든 GameObject
    > - Room Type : Room Prefab의 타입
-   > - Doorways : 다른 방으로 이동할 문의 정보를 가지는 `Doorways Class`의 배열
+   > - Doorways : 다른 방으로 이동할 문의 정보를 가지는 `Room3DDoorClass`의 배열
    >   > - Orientation : 동서남북 중 문의 위치
    >   > - Door Position : 문이 생성될 위치
    >   > - Door Prefab : 다른 방으로 이동하기 위한 문 오브젝트
-   >   >   > 1. Door Prefab을 만들 때, `Door Collider`와 `Door Trigger`를 자식으로 생성한 후 `DoorCollider2D/3D.cs`와 `DoorTrigger2D/3D.cs`를 각각 추가
+   >   >   > 1. Door Prefab을 만들 때, `Door Collider`와 `Door Trigger`를 자식으로 생성한 후 `DoorCollider3D.cs`와 `DoorTrigger3D.cs`를 각각 추가
    >   >   > 2. Door Prefab에서 Collider 오브젝트의 Tag를 DoorCollider로 변경
    >   >   > 3. Door Prefab에서 Trigger 오브젝트의 Tag를 DoorTrigger로 변경
    >   >   > - DoorCollider : 문이 닫혀있을 때, 플레이어가 문을 지나가지 못하도록 하는 오브젝트
