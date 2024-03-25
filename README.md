@@ -11,7 +11,7 @@
 
 ## Team Project
 > [![영상](http://img.youtube.com/vi/baY5OeMPuSk/0.jpg)](https://youtu.be/baY5OeMPuSk?t=0s)
-> [Scripts Folder](https://github.com/xcb00/Portfolios/tree/main/Folder/Scripts/TeamProject)
+> - [Scripts Folder](https://github.com/xcb00/Portfolios/tree/main/Folder/Scripts/TeamProject)
 
 ## ETC
 > - Slider Step
