@@ -87,5 +87,3 @@
       > - 숫자 2 : 문 닫기
       > - R : 던전을 새로 만듦
 12. 외부 스크립트에서 `DungeonBuilder`를 참조해 사용할 경우, `DungeonBuilder.cs`의 `Update`문을 삭제
-
-### 에디터 키
