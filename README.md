@@ -13,6 +13,6 @@
 ## ETC
 > - Slider Step
 >   > - 유니티에서 기본 제공하는 Slider는 증감의 크기를 조절할 수 없기 때문에 증감의 크기를 조절할 수 있도록 하는 스크립트
->   > - [SliderStep]()
+>   > - [SliderStep](https://github.com/xcb00/Portfolios/blob/main/Folder/SliderStep.md)
 > - 
 
