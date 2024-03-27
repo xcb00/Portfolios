@@ -5,7 +5,7 @@
 
 ## FarmStory
 > [![다운로드](https://raw.githubusercontent.com/xcb00/Portfolios/main/Folder/Resources/FarmStory.png)](https://play.google.com/store/apps/details?id=com.geon.farmstory)
-> - '스타듀밸리'와 같은 생활형 수집 게임
+> - '스타듀밸리'와 같은 생활형 생존 게임
 > - [플레이스토어 다운로드 링크](https://play.google.com/store/apps/details?id=com.geon.farmstory)
 > - [FarmStoryDocs](https://github.com/xcb00/Portfolios/blob/main/Folder/FarmStoryDocs.md)
 > - [Scripts Folder](https://github.com/xcb00/Portfolios/tree/main/Folder/Scripts/Farmstory)
