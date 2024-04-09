@@ -18,7 +18,7 @@
    > 5. 디지털 키가 반영된 `google-services.json` 새로 다운 후 에셋 폴더에 붙여넣기
 6. Firebase SDK 동기화
    > - `FirebaseApp.CheckAndFixDependenciesAsync()`를 이용해 동기화를 실행
-   >   > - `FirebaseApp.CheckAndFixDependenciesAsync`는 Firebase SDK를 Unity에서 사용할 수 있도록 종속성을 수정하는 메소드
+   >   > `FirebaseApp.CheckAndFixDependenciesAsync`는 Firebase SDK를 Unity에서 사용할 수 있도록 종속성을 수정하는 메소드
    > - `FirebaseApp.CheckAndFixDependenciesAsync()` 종료 후 실행할 콜백함수를 `.ContinueWith()` 이용해 정의
 8. 1
 
@@ -73,6 +73,9 @@
    </details>
 
 
+
+
+---
 <details>
 <summary>Photon ClientState enum</summary>
 
