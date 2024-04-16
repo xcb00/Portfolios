@@ -16,5 +16,9 @@
    >   > </details>
    > - 
 2. Import GPGS Package
+   > - GooglePlayGamesPlugin-0.11.01 failed error
+   >   > 1. `Assets\GooglePlayGames\com.google.play.games\Editor\GooglePlayGamesPluginDependencies.xml` 열기
+   >   > 2. repository 내부를 `Assets/GooglePlayGames/com.google.play.games/Editor/m2repository`로 변경
+   >   > 3. 
 3. Google Play Console에 앱 등록
 4. 
