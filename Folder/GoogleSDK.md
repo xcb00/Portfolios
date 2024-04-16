@@ -19,6 +19,10 @@
    > - GooglePlayGamesPlugin-0.11.01 failed error
    >   > 1. `Assets\GooglePlayGames\com.google.play.games\Editor\GooglePlayGamesPluginDependencies.xml` 열기
    >   > 2. repository 내부를 `Assets/GooglePlayGames/com.google.play.games/Editor/m2repository`로 변경
-   >   > 3. 
 3. Google Play Console에 앱 등록
-4. 
+   > - Build 시 Gradle Error
+   >   > 1. `Player Settings > Publishing Settings > Build > Custom Gradle Properties Template` 체크
+   >   > 2. `Assets\Plugins\Android`의 `graldeTemplate.properties` 열기
+   >   > 3. `android.enableR8=false` 붙여넣기
+5. 1
+6. 
