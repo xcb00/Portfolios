@@ -23,6 +23,7 @@
    > - Build 시 Gradle Error
    >   > 1. `Player Settings > Publishing Settings > Build > Custom Gradle Properties Template` 체크
    >   > 2. `Assets\Plugins\Android`의 `graldeTemplate.properties` 열기
-   >   > 3. `android.enableR8=false` 붙여넣기
+   >   > 3. `android.enableD8=true` 붙여넣기
+   >   > 4. `android.enableR8=false` 붙여넣기
 5. 1
 6. 
