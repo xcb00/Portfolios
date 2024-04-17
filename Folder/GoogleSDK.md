@@ -81,6 +81,23 @@
    >   >    } 
    >   > }
    >   > ```
+   >   > </details>   
+   > - Save/Load
+   >   > 1. `Google Play Console > Play 게임즈 서비스 > 설정 및 관리 > 설정 > 속성`에서 속성 수정을 클릭 후 저장된 게임을 사용으로 변경
+   >   > 2. `Google Cloud Console > 메뉴 > 제품 및 솔루션 > 모든 제품 > Google Workspace > API > Google Workspace Marketplace SDK` 사용
+   >   > 3. 'Google Play Console > 대시보드 > 앱 설정 > 앱 엑세스 권한`에서 엑세스 권한 허용
+   >   > <details>
+   >   > <summary>Show Code</summary>
+   >   > 
+   >   > ```C#
+   >   > using GooglePlayGames;
+   >   > using GooglePlayGames.BasicApi;
+   >   > using UnityEngine.SocialPlatforms;
+   >   > public class GoogleLogin : MonoBehaviour
+   >   > {
+   >   >    
+   >   > }
+   >   > ```
    >   > </details>
    > - Friends
    >   > <details>
@@ -123,9 +140,13 @@
    >   > }
    >   > ```
    >   > </details>
-   > - Achievements
+   > - Achievements / Leaderboard / Event
+   >   > 1. `Google Play Console > Play 게임즈 서비스 > 업적/리더보드/이벤트`에서 업적/리더보드/이벤트 생성
+   >   > 2. 리소스 보기 후 복사(업적/리더보드/이벤트의 리소스가 모두 동일)
+   >   > 3. 'Unity > Window > Google Play Games > Setup > Android Setup`으로 `Google Play Games - Android Configuration - Resources Definition`에 xml 붙여넣기
+   >   > 4. Setup
    >   > <details>
-   >   > <summary>Show Code</summary>
+   >   > <summary>Achievements Code</summary>
    >   > 
    >   > ```C#
    >   > using GooglePlayGames;
@@ -139,9 +160,8 @@
    >   > }
    >   > ```
    >   > </details>
-   > - Leaderboards
    >   > <details>
-   >   > <summary>Show Code</summary>
+   >   > <summary>Leaderboard Code</summary>
    >   > 
    >   > ```C#
    >   > using GooglePlayGames;
@@ -155,28 +175,8 @@
    >   > }
    >   > ```
    >   > </details>
-   > - Save/Load
-   >   > 1. `Google Play Console > Play 게임즈 서비스 > 설정 및 관리 > 설정 > 속성`에서 속성 수정을 클릭 후 저장된 게임을 사용으로 변경
-   >   > 2. `Google Cloud Console > 메뉴 > 제품 및 솔루션 > 모든 제품 > Google Workspace > API > Google Workspace Marketplace SDK` 사용
-   >   > 3. 'Google Play Console > 대시보드 > 앱 설정 > 앱 엑세스 권한`에서 엑세스 권한 허용
    >   > <details>
-   >   > <summary>Show Code</summary>
-   >   > 
-   >   > ```C#
-   >   > using GooglePlayGames;
-   >   > using GooglePlayGames.BasicApi;
-   >   > using UnityEngine.SocialPlatforms;
-   >   > public class GoogleLogin : MonoBehaviour
-   >   > {
-   >   >    public void Login()
-   >   >    {
-   >   >       PlayGame
-   >   > }
-   >   > ```
-   >   > </details>
-   > - Event
-   >   > <details>
-   >   > <summary>Show Code</summary>
+   >   > <summary>Event Code</summary>
    >   > 
    >   > ```C#
    >   > using GooglePlayGames;
