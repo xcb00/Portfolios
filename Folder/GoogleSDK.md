@@ -32,6 +32,9 @@
    > 4. `android.enableR8=false` 붙여넣기
    > </details>
 4. Play 게임즈 서비스 설정
+   > <details>
+   > <summary>Google Play Games Setting</summary>
+   > 
    > 1. `Play 게임즈 서비스 > 설정 및 관리 > 설정 > 새 Play 게임즈 서비스 프로젝트 만들기`
    > 2. `Google Cloud Console`에서 **앱 이름과 동일하게** 새 프로젝트 생성
    > 3. `Google Play Console`에서 `Google Cloud Console`에서 생성한 프로젝트를 `클라우드 프로젝트`로 선택
@@ -50,4 +53,141 @@
    > 16. 'Unity > Window > Google Play Games > Setup > Android Setup`으로 `Google Play Games - Android Configuration` 열기
    > 17. `Google Play Games - Android Configuration`의 Resources Definition에 xml 붙여넣기
    > 18. `Google Cloud Platform > 사용자 인증 정보 > 웹 어플리케이션`의 클라이언트 ID를 `Google Play Games - Android Configuration > Client ID`에 입력 후 Setup
-6. 1
+   > </details>
+5. GooglePlayGames에서 사용할 API 작성
+   > - Log in
+   >   > <details>
+   >   > <summary>Show Code</summary>
+   >   > 
+   >   > ```C#
+   >   > using GooglePlayGames;
+   >   > using GooglePlayGames.BasicApi;
+   >   > using UnityEngine.SocialPlatforms;
+   >   > using UnityEngine.UI;
+   >   > public class GoogleLogin : MonoBehaviour
+   >   > {
+   >   >    public Text login;
+   >   >    public void Login()
+   >   >    {
+   >   >       // Unity에서 제공하는 Social을 사용하기 위해 사용
+   >   >       // Unity의 Social을 사용하지 않을 경우 PlayGamesPlatform.Instance.Authenticate만 사용할 수 있음
+   >   >       PlayGamesPlatform.Activate(); 
+   >   >       
+   >   >       // SignInStatus.Success : The operation was successful
+   >   >       // SignInStatus.InternalError : An internal error occurred
+   >   >       // SignInStatus.Canceled : The sign in was canceled
+   >   >       PlayGamesPlatform.Instance.Authenticate(
+   >   >          (SignInStatus status) =〉login.text = status == SignInStatus.Success ? $"Success : {Social.localUser}" : $"Failed : {status}";);
+   >   >    } 
+   >   > }
+   >   > ```
+   >   > </details>
+   > - Friends
+   >   > <details>
+   >   > <summary>Show Code</summary>
+   >   > 
+   >   > ```C#
+   >   > using GooglePlayGames;
+   >   > using GooglePlayGames.BasicApi;
+   >   > using UnityEngine.SocialPlatforms;
+   >   > using UnityEngine.UI;
+   >   > public class GoogleLogin : MonoBehaviour
+   >   > {
+   >   >    public Text askFriend;
+   >   >    public Text loadFriend;
+   >   >    public void LoadFriend()
+   >   >    {
+   >   >       // LoadFriendsStatus.Completed : All the friends have been loaded
+   >   >       // LoadFriendsStatus.LoadMore : There are more friends to load
+   >   >       // LoadFriendsStatus.ResolutionRequired : The game doesn't have permission to access the player's friends list
+   >   >       
+   >   >       // GetLastLoadFriendsStatus : 마지막으로 친구 목록을 로드한 상태를 반환
+   >   >       // 만약 게임에 친구 목록을 불러올 권한이 없을 경우 AskForLoadFriendsResolution로 플레이어에게 권한 요청
+   >   >       if(PlayGamesPlatform.Inst.GetLastLoadFriendsStatus() == LoadFriendsStatus.ResolutionRequired)
+   >   >          PlayGamesPlatform.Instance.AskForLoadFriendsResolution(
+   >   >             (result) = 〉askFriend.text = result == UISatus.Valid ? "Player Agree" : "Player Disagree");
+   >   >       
+   >   >       // 플레이어의 친구 목록을 불러옴
+   >   >       // LoadFriends : Google Play Games의 친구 목록을 불러오는 메소드로
+   >   >       // pageSize(불러올 친구 개수), forceReload(캐시 사용 여부), callback을 변수로 가짐
+   >   >       // forceReload가 true일 경우 캐시에 상관 없이 서버에서 친구 목록을 새로 불러오고, false일 경우 캐시가 있을 경우 캐시 사용
+   >   >       PlayGamesPlatform.Inst.LoadFriends(3, false, (status)=〉{
+   >   >          if(status == LoadFriendsStatus.Completed) // 친구 불러오기가 완료되었을 경우 친구의 userName을 출력
+   >   >          {
+   >   >             foreach(IUserProfile _friend in Social.localUser.friends)
+   >   >                loadFriend.text += _friend.userName + "/";
+   >   >          }
+   >   >          else
+   >   >             loadFriend.text = $"Load Friend Failed : {status}";
+   >   >    }
+   >   > }
+   >   > ```
+   >   > </details>
+   > - Achievements
+   >   > <details>
+   >   > <summary>Show Code</summary>
+   >   > 
+   >   > ```C#
+   >   > using GooglePlayGames;
+   >   > using GooglePlayGames.BasicApi;
+   >   > using UnityEngine.SocialPlatforms;
+   >   > public class GoogleLogin : MonoBehaviour
+   >   > {
+   >   >    public void Login()
+   >   >    {
+   >   >       PlayGame
+   >   > }
+   >   > ```
+   >   > </details>
+   > - Leaderboards
+   >   > <details>
+   >   > <summary>Show Code</summary>
+   >   > 
+   >   > ```C#
+   >   > using GooglePlayGames;
+   >   > using GooglePlayGames.BasicApi;
+   >   > using UnityEngine.SocialPlatforms;
+   >   > public class GoogleLogin : MonoBehaviour
+   >   > {
+   >   >    public void Login()
+   >   >    {
+   >   >       PlayGame
+   >   > }
+   >   > ```
+   >   > </details>
+   > - Save/Load
+   >   > 1. `Google Play Console > Play 게임즈 서비스 > 설정 및 관리 > 설정 > 속성`에서 속성 수정을 클릭 후 저장된 게임을 사용으로 변경
+   >   > 2. `Google Cloud Console > 메뉴 > 제품 및 솔루션 > 모든 제품 > Google Workspace > API > Google Workspace Marketplace SDK` 사용
+   >   > 3. 'Google Play Console > 대시보드 > 앱 설정 > 앱 엑세스 권한`에서 엑세스 권한 허용
+   >   > <details>
+   >   > <summary>Show Code</summary>
+   >   > 
+   >   > ```C#
+   >   > using GooglePlayGames;
+   >   > using GooglePlayGames.BasicApi;
+   >   > using UnityEngine.SocialPlatforms;
+   >   > public class GoogleLogin : MonoBehaviour
+   >   > {
+   >   >    public void Login()
+   >   >    {
+   >   >       PlayGame
+   >   > }
+   >   > ```
+   >   > </details>
+   > - Event
+   >   > <details>
+   >   > <summary>Show Code</summary>
+   >   > 
+   >   > ```C#
+   >   > using GooglePlayGames;
+   >   > using GooglePlayGames.BasicApi;
+   >   > using UnityEngine.SocialPlatforms;
+   >   > public class GoogleLogin : MonoBehaviour
+   >   > {
+   >   >    public void Login()
+   >   >    {
+   >   >       PlayGame
+   >   > }
+   >   > ```
+   >   > </details>
+7. 1
