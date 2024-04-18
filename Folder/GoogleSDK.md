@@ -90,12 +90,54 @@
    >   > <summary>Show Code</summary>
    >   > 
    >   > ```C#
+   >   > using System;
    >   > using GooglePlayGames;
    >   > using GooglePlayGames.BasicApi;
-   >   > using UnityEngine.SocialPlatforms;
+   >   > using GooglePlayGames.BasicApi.SavedGame;
    >   > public class GoogleLogin : MonoBehaviour
    >   > {
+   >   >    publicText selectSlot, openData, saveData, loadData;
+   >   >    ISavedGameClient saveClient;
+   >   >    void Init()
+   >   >    {
+   >   >       PlayGamesPlatform.Activate();
+   >   >       saveSlient = Platform.Instance.SavedGame;
+   >   >    {
    >   >    
+   >   >    public void ShowSaveUI() // Google Cloud에 저장된 데이터를 보여줌
+   >   >    {
+   >   >       uint maxNumToDisplay = 5; // SavedGameUI에서 보여줄 데이터의 최대 개수
+   >   >       bool allowCreateNew = false; // SavedGameUI에서 데이터 생성 여부
+   >   >       bool allowDelete = true; // SavedGameUI에서 데이터 삭제 여부
+   >   >       saveClient.ShowSelectSavedGameUI("_Title_", maxNumToDisplay, allowCreateNew, allowDelete,
+   >   >          (SelectUIStatus status, ISavedGameMetadata data) => { Callback });
+   >   >    }
+   >   >    
+   >   >    void OpenData(DataSource dataSource, ConflictResolutionStrategy conflictStrategy, Action<SavedGameRequestStatus, ISavedGameMetadata> callback)
+   >   >       =〉saveClient.OpenWithAutomaticConflictResolution(Social.localUser.id, dataSource, conflictStrategy, callback);
+   >   >    
+   >   >    public void SaveButton() =〉
+   >   >       OpenData(DataSource.ReadCacheOrNetwork, ConflictResolutionStrategy.UseLongestPlaytime, (status, data) =〉SaveData(data));
+   >   >    
+   >   >    public void LoadButton() =〉
+   >   >       OpenData(DataSource.ReadCacheOrNetwork, ConflictResolutionStrategy.UseLastKnownGood, (status, data) =〉LoadData(data));
+   >   >    
+   >   >    public void DeleteButton() =〉
+   >   >       OpenData(DataSource.ReadCacheOrNetwork, ConflictResolutionStrategy.UseLongestPlaytime, (status, data) =〉saveClident.Delete(data));
+   >   >    
+   >   >    void SaveData(ISavedGameMetadata data)
+   >   >    {
+   >   >       avedGameMetadataUpdate.Builder builder = new SavedGameMetadataUpdate.Builder();
+   >   >       builder = builder
+   >   >          .WithUpdatedPlayedTime(TimeSpan.Zero.Add(DateTime.Now.TimeOfDay))
+   >   >          .WithUpdatedDescription("Saved game at " + DateTime.Now);
+   >   >       SavedGameMetadataUpdate updater = builder.Build();
+   >   >       saveClient.CommitUpdate(data, updater, System.Text.Encoding.UTF8.GetBytes("저장할 데이터 내용"),
+   >   >          (SavedGameRequestStatus status, ISavedGameMetadata _data) =〉{ Callback });
+   >   >    }
+   >   >    
+   >   >    void LoadData(ISavedGameMetadata data)
+   >   >       =〉saveClient.ReadBinaryData(data, (_status, _loadData) =〉System.Text.Encoding.UTF8.GetString(_loadData));  
    >   > }
    >   > ```
    >   > </details>
@@ -149,45 +191,31 @@
    >   > <summary>Achievements Code</summary>
    >   > 
    >   > ```C#
-   >   > using GooglePlayGames;
-   >   > using GooglePlayGames.BasicApi;
-   >   > using UnityEngine.SocialPlatforms;
-   >   > public class GoogleLogin : MonoBehaviour
-   >   > {
-   >   >    public void Login()
-   >   >    {
-   >   >       PlayGame
-   >   > }
-   >   > ```
-   >   > </details>
-   >   > <details>
-   >   > <summary>Leaderboard Code</summary>
-   >   > 
-   >   > ```C#
-   >   > using GooglePlayGames;
-   >   > using GooglePlayGames.BasicApi;
-   >   > using UnityEngine.SocialPlatforms;
-   >   > public class GoogleLogin : MonoBehaviour
-   >   > {
-   >   >    public void Login()
-   >   >    {
-   >   >       PlayGame
-   >   > }
-   >   > ```
-   >   > </details>
-   >   > <details>
-   >   > <summary>Event Code</summary>
-   >   > 
-   >   > ```C#
-   >   > using GooglePlayGames;
-   >   > using GooglePlayGames.BasicApi;
-   >   > using UnityEngine.SocialPlatforms;
-   >   > public class GoogleLogin : MonoBehaviour
-   >   > {
-   >   >    public void Login()
-   >   >    {
-   >   >       PlayGame
-   >   > }
+   >   > // 업적 달성
+   >   > Social.ReportProgress(GPGSIds.achievement_id, 100f, (success) => { Callback}); 
+   >   > // 단계 업적 달성
+   >   > PlayGamesPlatform.Instance.IncrementAchievement(GPGSIds.achievement_step_id, 1, (success) => { Callback}); 
+   >   > // 이벤트 달성
+   >   > PlayGamesPlatform.Instance.Events.IncrementEvent(GPGSIds.event_test1_none, 1)
+   >   > // 리더보드 점수 획득
+   >   > Social.ReportScore(1000, GPGSIds.leaderboard_test1, (success) => { Callback}); 
+   >   > // 업적 보기
+   >   > Social.ShowAchievementsUI();
+   >   > // 전체 리더보드 보기
+   >   > Social.ShowLeaderboardUI();
+   >   > // 특정 리더보드 보기
+   >   > PlayGamesPlatform.Instance.ShowLeaderboardUI(GPGSIds.leaderboardID);
+   >   > // 리더보드 데이터 가져오기
+   >   > PlayGamesPlatform.Instance.LoadScores(
+   >   >    _id_, // GPGS Leaderboard Id
+   >   >    LeaderboardStart.TopScores, // 데이터를 가져올 시작점 TopScores/PlayerCentered
+   >   >    3, // 리더보드에서 가져올 데이터 개수
+   >   >    LeaderboardCollection.Public, // 리더보드에서 가져올 데이터 종류 Public/Social
+   >   >    LeaderboardTimeSpan.Alltime, // 리더보드에서 가여올 데이터의 생성 시간 Daily/Weekly/AllTime
+   >   >    (LeaderboardScoreData data) =〉{ // Callback
+   >   >       foreach(Iscore score in data.Scores) Debug.Log($"{score.userID}({score.formattedValue})");
+   >   >    });
+   >   > );
    >   > ```
    >   > </details>
 7. 1
