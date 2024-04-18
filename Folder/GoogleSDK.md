@@ -237,7 +237,7 @@
 ### 주의사항
 - **`Google AdMob > 설정 > 기기 테스트`에 테스트 할 기기 추가** [참고](https://support.google.com/admob/answer/9691433?hl=ko)
 - **전처리기를 이용해 유니티 에디터에서는 광고 ID를 테스트 ID로 설정하기** [TestID](https://developers.google.com/admob/unity/test-ads?hl=ko)
-- **AdMob Gradle 오류** : 버전에 맞는 Gradle 업데이트 [참고](https://developers.google.com/admob/unity/gradle?hl=ko)
+- **2022.1. 이전 버전의 AdMob Gradle 오류** [참고](https://developers.google.com/admob/unity/gradle?hl=ko)
 
 
 
