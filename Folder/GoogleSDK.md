@@ -244,4 +244,9 @@
 
 
 ## Firebase
-
+### Authentication
+#### Google Play Games
+> - 클라이언트 ID/비밀번호
+>   > `Google Cloud Platform > API 및 서비스 > 사용자 인증 정보 > 웹 애플리케이션 클라이언트 ID > Additional information`에 있는 ID와 비밀번호 입력
+> - 1
+> - 
