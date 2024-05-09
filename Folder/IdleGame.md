@@ -22,6 +22,25 @@
   > - Render Mode가 `Screen Space - Overlay`인 캔버스를 9:16 비율에 맞도록 Scaler의 Offset을 조절
   > - LetterBox : ViewportRect로 생긴 레터박스 위에 UI가 그려지면 지워지지 않고 남기 때문에 이를 방지하기 위해 이미지로 레터박스를 새로 생성
 
+### Scriptable Object로 캐릭터의 스탯 조절
+- PlayerCharacterStatus/MonsterStatus
+  > - 캐릭터들의 status의 정보를 가지는 클래스
+  > - 원본 클래스를 복사한 클래스를 생성할 수 있는 생성자를 가짐
+- GetCharacterStatus
+  > - 매개변수로 입력한 타입의 캐릭터 status를 배열에서 찾아 반환하는 메소드
+  > - class의 경우 참조변수이기 때문에 반환받은 status의 값을 그대로 사용할 경우 SO의 status 값도 변경되기 때문에 생성자로 새로운 클래스를 생성해 반환
+- Status 배열
+  > - 캐릭터마다 StatusSO를 만들지 않고, 하나의 SO에 모든 캐릭터의 Status를 관리하기 위해 배열을 사용
+- OnValidate
+  > - 휴먼 에러를 줄이기 위해 인스펙터의 값이 변경될 경우 Character의 타입이 None 또는 중복된 값이 있는지 검증
+  > - 게임이 실행될 때는 검증할 필요가 없기 때문에 전처리기를 이용해 유니티 에디터에서만 실행
+
+### 캐릭터
+- 상속
+  > - 게임의 확장성을 고려해 `Property > Class > Details` 형태의 상속 사용
+- FSM
+  > - FSM을 이용해 캐릭터 상태에 따른 행동을 하도록 함
+
 - Start 버튼을 누를 경우 페이드인/페이드아웃 처리
 - Stage Clear/Failed 경우 결과창 출력
 - Stage 중 레벨업
