@@ -42,9 +42,8 @@
   > - FSM을 이용해 캐릭터 상태에 따른 행동을 하도록 함
 
 
-2. 재화 업그레이드에 따른 플레이어 캐릭터 스탯 조절
 4. 출석보상
+6. 오프라인 보상 // OnApplicationQuit/OnApplicationPause/OnApplicationFocus
 5. AdMob
 ---
-6. 오프라인 보상
 7. Stage 티켓
