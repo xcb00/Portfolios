@@ -11,7 +11,7 @@
 > - [Scripts Folder](https://github.com/xcb00/Portfolios/tree/main/Folder/Scripts/Farmstory)
 
 ## Team Project
-> ![Portfolio](https://raw.githubusercontent.com/xcb00/Portfolios/main/Folder/Resources/Portfolios%20(4).png)
+> ![Portfolio](https://github.com/xcb00/Portfolios/blob/main/Folder/Resources/Portfolios%20(6).png)
 > - [Scripts Folder](https://github.com/xcb00/Portfolios/tree/main/Folder/Scripts/TeamProject)
 > - [소개영상](https://www.youtube.com/watch?v=baY5OeMPuSk)
 
