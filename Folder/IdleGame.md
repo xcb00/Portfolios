@@ -1,3 +1,5 @@
+[Github README](https://github.com/xcb00/Portfolios/blob/main/Folder/IdleGame.md)
+
 ### 게임 방법
 > - Stage
 >   > - 캐릭터 카드를 드래그 해 슬롯에 배치
