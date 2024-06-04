@@ -1,12 +1,1 @@
-![Portfolio](https://raw.githubusercontent.com/xcb00/Portfolios/main/Folder/Resources/Portfolios%20(0).png)
-## Project Docs
-- DungeonBuilder
-  > - [DungeonBuilderDocs](https://github.com/xcb00/Portfolios/blob/main/Folder/DungeonBuilderDocs.md)
-  > - [Scripts](https://github.com/xcb00/Portfolios/tree/main/Folder/Scripts/DungeonBuilder)
-- FarmStory
-  > - [플레이스토어 다운로드 링크](https://play.google.com/store/apps/details?id=com.geon.farmstory)
-  > - [FarmStoryDocs](https://github.com/xcb00/Portfolios/blob/main/Folder/FarmStoryDocs.md)
-  > - [Scripts](https://github.com/xcb00/Portfolios/tree/main/Folder/Scripts/Farmstory)
-- 방치형 게임
-  > - [IdleGameDocs](https://github.com/xcb00/Portfolios/blob/main/Folder/IdleGame.md)
-
+![Portfolio](https://github.com/xcb00/Portfolios/blob/main/Folder/Resources/%5B%EC%9C%A0%EB%8B%88%ED%8B%B0%EA%B0%9C%EB%B0%9C%5D%EC%9A%B0%EA%B1%B4_%EC%9D%B4%EB%A0%A5%EC%84%9C.png)
